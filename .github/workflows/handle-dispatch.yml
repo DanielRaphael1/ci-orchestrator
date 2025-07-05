@@ -1,0 +1,16 @@
+name: Handle Repository Dispatch
+
+on:
+  repository_dispatch:
+    types: [enqueue-job]
+
+jobs:
+  run-job:
+    concurrency:
+      group: global-workflow-group
+      cancel-in-progress: false
+    uses: ./.github/workflows/reusable-workflow.yml
+    with:
+      caller: ${{ github.event.client_payload.repo }}
+    secrets:
+      personal_access_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
