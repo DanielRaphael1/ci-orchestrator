@@ -1,0 +1,22 @@
+name: Reusable Workflow
+
+on:
+  workflow_call:
+    inputs:
+      caller:
+        required: true
+        type: string
+    secrets:
+      personal_access_token:
+        required: true
+
+concurrency:
+  group: global-workflow-group
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print who triggered
+        run: echo "Running job triggered by ${{ inputs.caller }}"
